@@ -1,1 +1,36 @@
-<p>navbar works!</p>
+<!-- ✅ Navbar principale -->
+<p-menubar [model]="[]">
+  <ng-template pTemplate="start">
+    <div class="navbar-left">
+      <i class="pi pi-bars hamburger" (click)="toggleSidebar()"></i>
+      <span class="logo ml-2">MyApp</span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <div class="navbar-right">
+      <span class="right-text hidden-sm mr-2">Benvenuto</span>
+      <p-menu #userMenuPopup [popup]="true" [model]="userMenu"></p-menu>
+      <i
+        class="pi pi-user user-icon"
+        (click)="userMenuPopup.toggle($event)"
+      ></i>
+    </div>
+  </ng-template>
+</p-menubar>
+
+<!-- ✅ Sidebar (visibile solo su mobile o se aperta) -->
+<p-drawer
+  [(visible)]="sidebarVisible"
+  [modal]="true"
+  position="left"
+  [baseZIndex]="10000"
+>
+  <h3>Menu</h3>
+  <ul class="sidebar-links">
+    <li (click)="navigateAndClose('/')">🏠 Home</li>
+    <li (click)="navigateAndClose('/profilo')">👤 Profilo</li>
+    <li (click)="navigateAndClose('/impostazioni')">⚙️ Impostazioni</li>
+    <li (click)="logout()">🚪 Logout</li>
+  </ul>
+</p-drawer>
