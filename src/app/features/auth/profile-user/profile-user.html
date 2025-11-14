@@ -1,0 +1,53 @@
+<div class="p-d-flex p-jc-start p-ai-start p-gap-4">
+  <!-- Anteprima immagine -->
+  <div class="p-d-flex p-flex-column" style="flex: 1 0 25%">
+    @if(imagePreview){
+
+    <img [src]="imagePreview" alt="Anteprima" class="preview-img" />
+    }
+
+    <p-fileUpload
+      mode="basic"
+      name="file"
+      accept="image/*"
+      [auto]="false"
+      chooseLabel="Seleziona immagine"
+      (onSelect)="onFileSelected($event)"
+    ></p-fileUpload>
+
+    @if (uploadProgress >= 0) {
+
+    <p-progressBar [value]="uploadProgress"></p-progressBar>
+    } @if (isUploading) {
+
+    <p-progressSpinner class="p-mt-2"></p-progressSpinner>
+    }
+  </div>
+
+  <!-- Form dati utente -->
+  <div style="flex: 1 0 70%">
+    <form [formGroup]="profileForm">
+      <div class="p-field">
+        <label for="firstName">Nome</label>
+        <input id="firstName" pInputText formControlName="firstName" />
+      </div>
+
+      <div class="p-field">
+        <label for="lastName">Cognome</label>
+        <input id="lastName" pInputText formControlName="lastName" />
+      </div>
+
+      <div class="p-field">
+        <label for="username">Username</label>
+        <input id="username" pInputText formControlName="username" />
+      </div>
+    </form>
+
+    <button
+      pButton
+      label="Conferma Upload"
+      (click)="uploadImage()"
+      [disabled]="isUploading"
+    ></button>
+  </div>
+</div>
