@@ -1,20 +1,25 @@
 import {
   ApplicationConfig,
+  importProvidersFrom,
+  inject,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { providePrimeNG } from 'primeng/config';
+import { provideRouter } from '@angular/router';
 import Lara from '@primeuix/themes/lara';
+import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAnalytics, getAnalytics } from '@angular/fire/analytics';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
-
+import { ToastService } from './core/services/toast-service';
+import { StandaloneHttpLoader } from './standalone-http-loader';
 // Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyDYec7HjwJe56YtS4l_ehdVOEgZdM8JAN0',
@@ -33,7 +38,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideAnimations(),
-
+    provideHttpClient(),
     // PrimeNG
     providePrimeNG({ theme: { preset: Lara } }),
 
@@ -42,7 +47,15 @@ export const appConfig: ApplicationConfig = {
     provideAnalytics(() => getAnalytics()),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: () => new StandaloneHttpLoader(inject(HttpClient)),
+        },
+      })
+    ),
     MessageService,
+    ToastService,
   ],
 };

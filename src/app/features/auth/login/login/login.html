@@ -6,18 +6,19 @@
     class="flex flex-column gap-4 w-full"
   >
     <!-- email -->
+
     <div class="flex flex-column gap-1 w-full">
       <label for="email">email</label>
       <input
         id="email"
-        type="text"
+        type="email"
         pInputText
         formControlName="email"
         class="w-full"
       />
     </div>
 
-    <!-- Password -->
+    @if(!passwordDimenticata()){
     <div class="flex flex-column gap-1 w-full">
       <label for="password">Password</label>
 
@@ -30,7 +31,7 @@
         toggleMask="true"
       />
     </div>
-
+    <a (click)="resetPassword()" class="text-primary">Password dimenticata</a>
     <!-- Pulsante -->
     <div class="flex justify-content-center mt-4 w-full">
       <button
@@ -41,9 +42,26 @@
         [disabled]="registerForm.invalid"
       ></button>
     </div>
+    <div class="mt-2 text-center">
+      oppure effettua la
+      <a [routerLink]="'/register'" class="text-primary">Registrazione</a>
+    </div>
+    } @else {
+    <!-- Pulsante -->
+    <div class="flex justify-content-center mt-4 w-full">
+      <button
+        type="submit"
+        pButton
+        label="Reset password"
+        class="p-button-rounded p-button-success w-full"
+        [disabled]="registerForm.get('email')?.invalid"
+      ></button>
+    </div>
+    <div class="mt-2 text-center">
+      oppure effettua la
+      <a (click)="resetPassword()" class="text-primary">Login</a>
+    </div>
+    }
+    <!-- Password -->
   </form>
-  <div class="mt-2 text-center">
-    oppure effettua la
-    <a [routerLink]="'/register'" class="text-primary">Registrazione</a>
-  </div>
 </p-card>

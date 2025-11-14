@@ -4,7 +4,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { Router } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
-import { AuthService } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/auth-services';
 
 @Component({
   selector: 'app-navbar',

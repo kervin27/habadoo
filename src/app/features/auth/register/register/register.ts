@@ -8,14 +8,16 @@ import {
 } from '@angular/forms';
 
 // PrimeNG modules
+import { updateProfile } from '@angular/fire/auth';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { AuthService } from '../../../../core/services/auth';
-import { MessageService } from 'primeng/api';
+import { AuthService } from '../../../../core/services/auth-services';
+import { FirebaseCatchError } from '../../../../core/interceptors/firebase-error.interceptor';
+import { ToastService } from '../../../../core/services/toast-service';
 @Component({
   selector: 'app-register',
   imports: [
@@ -24,7 +26,6 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     PasswordModule,
     ButtonModule,
-    ToastModule,
     CardModule,
     RouterLink,
   ],
@@ -34,8 +35,10 @@ import { MessageService } from 'primeng/api';
 })
 export class Register {
   authService: AuthService = inject(AuthService);
-  messageService: MessageService = inject(MessageService);
   router: Router = inject(Router);
+  transalteService: TranslateService = inject(TranslateService);
+  toastService: ToastService = inject(ToastService);
+  firebaseCatchError: FirebaseCatchError = inject(FirebaseCatchError);
 
   registerForm = new FormGroup(
     {
@@ -70,27 +73,40 @@ export class Register {
   submit() {
     if (this.registerForm.valid) {
       this.authService
-        .createUser(
-          this.registerForm.value.email!,
-          this.registerForm.value.password!
-        )
+        .checkPassword(this.registerForm.value.password!)
+        .then((res) => {
+          if (res.isValid) {
+            return this.authService.createUser(
+              this.registerForm.value.email!,
+              this.registerForm.value.password!
+            );
+          } else {
+            this.toastService.error(
+              'PASSWORD NON VALIDA',
+              `La password non rispetta i criteri richiesti`
+            );
+            return;
+          }
+        })
         .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Registrazione completata',
-            detail: 'Il tuo account è stato creato con successo!',
-            life: 3000,
-          });
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 3000);
+          if (userCredential) {
+            // Aggiorna il displayName
+            updateProfile(userCredential.user, {
+              displayName: this.registerForm.value.username,
+            });
+            this.toastService.success(
+              'CONFERMA REGISTRAZIONE',
+              `La registrazione è avvenuta con successo`
+            );
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 3000);
+          } else {
+            return;
+          }
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // ..
+          this.firebaseCatchError.handleFirebaseError(error);
         });
     }
   }

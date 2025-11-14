@@ -1,0 +1,15 @@
+{
+  "LABEL_FIREBASE": {
+    "EMAIL_ALREADY_IN_USE": "Spiacenti, questa email è già registrata.",
+    "INVALID_EMAIL": "L'indirizzo email fornito non è valido.",
+    "WEAK_PASSWORD": "La password è troppo debole. Usa almeno 6 caratteri.",
+    "USER_NOT_FOUND": "Nessun account trovato con questa email.",
+    "WRONG_PASSWORD": "La password inserita non è corretta.",
+    "USER_DISABLED": "Il tuo account è stato sospeso. Contatta l'assistenza.",
+    "REQUIRES_REAUTH": "Per continuare, devi accedere nuovamente.",
+    "NETWORK_FAILED": "Errore di rete. Verifica la tua connessione e riprova.",
+    "TOO_MANY_ATTEMPTS": "Hai effettuato troppi tentativi. Riprova più tardi.",
+    "UNKNOWN_ERROR": "Si è verificato un errore di autenticazione sconosciuto.",
+    "INVALID_CREDENTIAL": "Credenziali non valide"
+  }
+}
