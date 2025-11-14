@@ -1,15 +1,19 @@
 <!-- ✅ Navbar principale -->
 <p-menubar [model]="[]">
   <ng-template pTemplate="start">
-    <div class="navbar-left">
+    <div class="navbar-left flex align-items-center">
       <i class="pi pi-bars hamburger" (click)="toggleSidebar()"></i>
-      <span class="logo ml-2">MyApp</span>
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/habadoo-app.firebasestorage.app/o/habadoo_official.png?alt=media&token=ab954bef-8354-4ccd-8f94-963d1cff9c92"
+        alt="Logo della tua applicazione"
+        class="app-logo ml-2 pt-1"
+        style="height: 40px"
+      />
     </div>
   </ng-template>
-
   <ng-template pTemplate="end">
     <div class="navbar-right">
-      <span class="right-text hidden-sm mr-2">Benvenuto</span>
+      <span class="right-text hidden-sm mr-2">Benvenuto {{username()}}</span>
       <p-menu #userMenuPopup [popup]="true" [model]="userMenu"></p-menu>
       <i
         class="pi pi-user user-icon"

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
@@ -18,6 +18,7 @@ export class Navbar {
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
 
+  username = signal(this.authService.user()?.displayName);
   ngOnInit() {
     this.userMenu = [
       {
