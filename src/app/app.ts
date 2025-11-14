@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './core/services/auth';
 import { Navbar } from './shared/components/navbar/navbar';
 
 @Component({
@@ -10,4 +11,6 @@ import { Navbar } from './shared/components/navbar/navbar';
 })
 export class App {
   protected title = 'habadoo';
+
+  authService: AuthService = inject(AuthService);
 }

@@ -1,0 +1,87 @@
+<div class="flex justify-content-end sm:justify-content-center w-full p-2">
+  <p-toast position="top-right" class="w-full sm:w-30rem"></p-toast>
+</div>
+<p-card class="register-card max-w-md p-3">
+  <h2 class="text-center mb-4">🎉 Registrati Ora!</h2>
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="submit()"
+    class="flex flex-column gap-4 w-full"
+  >
+    <!-- Username -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="username">Username</label>
+      <input
+        id="username"
+        type="text"
+        pInputText
+        formControlName="username"
+        class="w-full"
+      />
+    </div>
+
+    <!-- Email -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        pInputText
+        formControlName="email"
+        class="w-full"
+      />
+
+      @if ( registerForm.get('email')?.invalid &&
+      registerForm.get('email')?.touched ) {
+      <small class="p-error">Email non valida</small>
+      }
+    </div>
+
+    <!-- Password -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        type="password"
+        pInputText
+        formControlName="password"
+        class="w-full"
+        toggleMask="true"
+      />
+      <small class="p-info">Minimo 6 caratteri</small>
+    </div>
+
+    <!-- Conferma Password -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="confirmPassword">Ripeti Password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        pInputText
+        formControlName="confirmPassword"
+        class="w-full"
+        toggleMask="true"
+      />
+      @if ( registerForm.errors?.['passwordMismatch'] && registerForm.touched )
+      {
+      <div class="p-error">Le password non coincidono</div>
+      }
+    </div>
+
+    <!-- Pulsante -->
+    <div class="flex justify-content-center mt-4 w-full">
+      <button
+        type="submit"
+        pButton
+        label="Registrati"
+        class="p-button-rounded p-button-success w-full"
+        [disabled]="registerForm.invalid"
+      ></button>
+    </div>
+  </form>
+  <div class="mt-2 text-center">
+    oppure effettua il
+    <a [routerLink]="'/login'" class="text-primary">Login</a>
+  </div>
+</p-card>

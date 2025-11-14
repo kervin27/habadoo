@@ -1,0 +1,49 @@
+<p-card class="register-card max-w-md p-3">
+  <h2 class="text-center mb-4">🎉 Effettua il login!</h2>
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="submit()"
+    class="flex flex-column gap-4 w-full"
+  >
+    <!-- email -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="email">email</label>
+      <input
+        id="email"
+        type="text"
+        pInputText
+        formControlName="email"
+        class="w-full"
+      />
+    </div>
+
+    <!-- Password -->
+    <div class="flex flex-column gap-1 w-full">
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        type="password"
+        pInputText
+        formControlName="password"
+        class="w-full"
+        toggleMask="true"
+      />
+    </div>
+
+    <!-- Pulsante -->
+    <div class="flex justify-content-center mt-4 w-full">
+      <button
+        type="submit"
+        pButton
+        label="Login"
+        class="p-button-rounded p-button-success w-full"
+        [disabled]="registerForm.invalid"
+      ></button>
+    </div>
+  </form>
+  <div class="mt-2 text-center">
+    oppure effettua la
+    <a [routerLink]="'/register'" class="text-primary">Registrazione</a>
+  </div>
+</p-card>

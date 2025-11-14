@@ -4,6 +4,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { Router } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -14,8 +15,8 @@ import { DrawerModule } from 'primeng/drawer';
 export class Navbar {
   userMenu: MenuItem[] = [];
   sidebarVisible = false;
-
-  router = inject(Router);
+  authService: AuthService = inject(AuthService);
+  router: Router = inject(Router);
 
   ngOnInit() {
     this.userMenu = [
@@ -34,8 +35,9 @@ export class Navbar {
   }
 
   logout() {
-    console.log('Logout eseguito');
     this.sidebarVisible = false; // chiude la sidebar al logout
+    this.authService.logoutUser();
+    this.router.navigate(['/login']);
   }
 
   toggleSidebar() {
