@@ -1,0 +1,198 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Main Container -->
+  <div class="max-w-screen-xl mx-auto px-4 py-4">
+    <div class="grid">
+      <!-- Sidebar Sinistra - Desktop -->
+      <div class="hidden lg:block col-12 lg:col-3">
+        <p-card class="border-round-2xl shadow-1">
+          <nav class="flex flex-column gap-1">
+            @for (item of menuItems(); track item.label) {
+            <button
+              class="p-3 border-round-xl flex align-items-center gap-3 border-none cursor-pointer transition-all transition-duration-200"
+              [class.bg-primary]="item.active"
+              [class.text-white]="item.active"
+              [class.hover:bg-gray-100]="!item.active"
+              (click)="setActiveMenu(item.label)"
+              [routerLink]="item.path"
+            >
+              <i [class]="item.icon + ' text-xl'"></i>
+              <span class="font-semibold">{{ item.label }}</span>
+            </button>
+            }
+          </nav>
+
+          <!-- Trending Topics -->
+          <!-- <div class="mt-4 pt-4 border-top-1 surface-border">
+            <h3
+              class="text-sm font-bold text-900 mb-3 flex align-items-center gap-2"
+            >
+              <i class="pi pi-chart-line"></i>
+              Trending
+            </h3>
+            <div class="flex flex-column gap-2">
+              @for (topic of trendingTopics(); track topic.tag) {
+              <button
+                class="text-left p-2 border-round-lg border-none cursor-pointer hover:bg-gray-100 transition-colors transition-duration-200"
+              >
+                <div class="text-sm font-semibold text-primary">
+                  {{ topic.tag }}
+                </div>
+                <div class="text-xs text-600">{{ topic.posts }} post</div>
+              </button>
+              }
+            </div>
+          </div> -->
+        </p-card>
+      </div>
+
+      <!-- Contenuto Principale -->
+      <main class="col-12 lg:col-6">
+        <!-- Categories Grid -->
+        <div class="grid mb-4">
+          @for (cat of categories(); track cat.name) {
+          <div class="col-12 sm:col-6">
+            <p-card
+              class="border-round-2xl shadow-1 hover:shadow-3 cursor-pointer transition-all transition-duration-200"
+              routerLink="/forum"
+            >
+              <div
+                [class]="'w-3rem h-3rem ' + cat.color + ' border-round-xl flex align-items-center justify-content-center mb-3'"
+              >
+                <i [class]="cat.icon + ' text-white text-2xl'"></i>
+              </div>
+              <h3 class="font-bold text-900 mb-1">{{ cat.name }}</h3>
+              <p class="text-sm text-600 m-0">{{ cat.count }}</p>
+            </p-card>
+          </div>
+          }
+        </div>
+
+        <!-- Feed Notizie -->
+        <div class="flex align-items-center justify-content-between mb-4">
+          <h2 class="text-3xl font-bold text-900 m-0">Feed Recenti</h2>
+          <p-button label="Vedi tutti" styleClass="p-button-text p-button-sm">
+          </p-button>
+        </div>
+
+        <div class="flex flex-column gap-3">
+          @for (item of newsItems(); track item.id) {
+          <p-card
+            styleClass="border-round-2xl shadow-1 hover:shadow-3 transition-all transition-duration-200"
+          >
+            <div class="grid">
+              <div class="col-12 sm:col-4">
+                <img
+                  [src]="item.image"
+                  [alt]="item.title"
+                  class="w-full h-full border-round-xl object-fit-cover"
+                  style="max-height: 200px"
+                />
+              </div>
+              <div class="col-12 sm:col-8">
+                <div class="flex align-items-center gap-2 mb-3">
+                  <p-chip
+                    [label]="item.category"
+                    styleClass="bg-primary-100 text-primary-700"
+                  >
+                  </p-chip>
+                  <span class="text-sm text-600">{{ item.time }}</span>
+                </div>
+
+                <h3
+                  class="text-xl font-bold text-900 mb-2 cursor-pointer hover:text-primary"
+                >
+                  {{ item.title }}
+                </h3>
+
+                <div
+                  class="flex align-items-center gap-2 text-sm text-600 mb-3"
+                >
+                  <i class="pi pi-user"></i>
+                  <span>{{ item.author }}</span>
+                </div>
+
+                <div class="flex align-items-center gap-4">
+                  <button
+                    class="flex align-items-center gap-2 text-600 border-none bg-transparent cursor-pointer hover:text-pink-500 transition-colors transition-duration-200"
+                  >
+                    <i class="pi pi-heart text-lg"></i>
+                    <span class="text-sm font-semibold">{{ item.likes }}</span>
+                  </button>
+                  <button
+                    class="flex align-items-center gap-2 text-600 border-none bg-transparent cursor-pointer hover:text-primary transition-colors transition-duration-200"
+                  >
+                    <i class="pi pi-comment text-lg"></i>
+                    <span class="text-sm font-semibold"
+                      >{{ item.comments }}</span
+                    >
+                  </button>
+                  <button
+                    class="flex align-items-center gap-2 text-600 border-none bg-transparent cursor-pointer hover:text-green-500 transition-colors transition-duration-200"
+                  >
+                    <i class="pi pi-share-alt text-lg"></i>
+                  </button>
+                  <button
+                    class="flex align-items-center gap-2 text-600 border-none bg-transparent cursor-pointer hover:text-orange-500 transition-colors transition-duration-200 ml-auto"
+                  >
+                    <i class="pi pi-bookmark text-lg"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </p-card>
+          }
+        </div>
+      </main>
+
+      <!-- Sidebar Destra - Desktop -->
+      <div class="hidden xl:block col-12 xl:col-3">
+        <p-card styleClass="border-round-2xl shadow-1">
+          <h3 class="font-bold text-900 mb-3 flex align-items-center gap-2">
+            <i class="pi pi-calendar text-primary"></i>
+            Eventi Prossimi
+          </h3>
+
+          <div class="flex flex-column gap-3 mb-4">
+            <div
+              class="p-3 bg-primary-50 border-round-xl border-2 border-primary-100"
+            >
+              <div class="text-sm font-semibold text-primary mb-1">20 Nov</div>
+              <div class="font-semibold text-900">Webinar Angular 20</div>
+              <div class="text-sm text-600 mt-1">15:00 - 17:00</div>
+            </div>
+            <div
+              class="p-3 bg-green-50 border-round-xl border-2 border-green-100"
+            >
+              <div class="text-sm font-semibold text-green-600 mb-1">
+                22 Nov
+              </div>
+              <div class="font-semibold text-900">Challenge Fitness</div>
+              <div class="text-sm text-600 mt-1">Tutto il giorno</div>
+            </div>
+          </div>
+
+          <!-- <div class="pt-3 border-top-1 surface-border">
+            <h3 class="font-bold text-900 mb-3">Utenti Attivi</h3>
+            <div class="flex flex-column gap-3">
+              @for (user of [1, 2, 3]; track user) {
+              <div class="flex align-items-center gap-3">
+                <p-avatar label="U" styleClass="bg-primary" shape="circle">
+                </p-avatar>
+                <div class="flex-1">
+                  <div class="text-sm font-semibold text-900">
+                    Utente {{ user }}
+                  </div>
+                  <div class="text-xs text-600">Online ora</div>
+                </div>
+                <span
+                  class="w-0.5rem h-0.5rem bg-green-500 border-circle"
+                ></span>
+              </div>
+              }
+            </div>
+          </div> -->
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>

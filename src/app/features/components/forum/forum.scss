@@ -1,0 +1,31 @@
+:host ::ng-deep {
+  .p-card {
+    border: none;
+  }
+
+  .p-card-body {
+    padding: 1.25rem;
+  }
+
+  .p-inputtextarea {
+    resize: none;
+  }
+
+  .p-dropdown {
+    border-radius: 0.75rem;
+  }
+
+  /* Fix per menu popup su mobile */
+  .p-menu.p-menu-overlay {
+    max-width: calc(100vw - 2rem);
+    left: auto !important;
+    right: 1rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .p-menu.p-menu-overlay {
+      max-width: none;
+      right: auto !important;
+    }
+  }
+}
