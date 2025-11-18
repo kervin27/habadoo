@@ -1,24 +1,45 @@
 import { Component, inject, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { MenubarModule } from 'primeng/menubar';
-import { MenuModule } from 'primeng/menu';
-import { Router } from '@angular/router';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
+import { MenuModule } from 'primeng/menu';
 import { AuthService } from '../../../core/services/auth-services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [MenubarModule, MenuModule, DrawerModule],
+  imports: [ButtonModule, AvatarModule, DrawerModule, MenuModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
 export class Navbar {
+  sidebarVisible = signal(false);
+  activeMenuItem = signal('Home');
+
+  menuItems = signal([
+    { label: 'Home', icon: 'pi pi-home', active: true },
+    { label: 'Forum', icon: 'pi pi-comments', active: false },
+    { label: 'Galleria', icon: 'pi pi-images', active: false },
+    { label: 'Schede Palestra', icon: 'pi pi-chart-bar', active: false },
+    { label: 'Appunti', icon: 'pi pi-file', active: false },
+  ]);
+
+  setActiveMenu(label: string) {
+    this.menuItems.update((items) =>
+      items.map((item) => ({
+        ...item,
+        active: item.label === label,
+      }))
+    );
+    this.activeMenuItem.set(label);
+  }
+
   userMenu: MenuItem[] = [];
-  sidebarVisible = false;
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
 
-  username = signal(this.authService.user()?.displayName);
+  // username = signal(this.authService.user()?.displayName);
   ngOnInit() {
     this.userMenu = [
       {
@@ -36,17 +57,7 @@ export class Navbar {
   }
 
   logout() {
-    this.sidebarVisible = false; // chiude la sidebar al logout
     this.authService.logoutUser();
     this.router.navigate(['/login']);
-  }
-
-  toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-  }
-
-  navigateAndClose(path: string) {
-    this.router.navigate([path]);
-    this.sidebarVisible = false;
   }
 }
