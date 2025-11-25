@@ -1,0 +1,220 @@
+<p-card
+  class="border-round-2xl shadow-1 hover:shadow-3 transition-all transition-duration-200"
+>
+  <!-- Post Header -->
+  <div class="flex align-items-start gap-3 mb-3">
+    <p-avatar
+      [label]="postWriteble().authorAvatar"
+      class="bg-primary"
+      shape="circle"
+      size="large"
+    >
+    </p-avatar>
+
+    <div class="flex-1">
+      <div class="flex align-items-center gap-2 mb-1 flex-wrap">
+        <span class="font-bold text-900">{{ postWriteble().author }}</span>
+        <span class="text-sm text-600"
+          >• {{ postWriteble().createdAt! |timeAgo}}</span
+        >
+        @if (postWriteble().isPinned) {
+        <p-chip
+          label="Pinned"
+          icon="pi pi-bookmark-fill"
+          class="bg-orange-100 text-orange-700"
+        >
+        </p-chip>
+        }
+      </div>
+      <!-- <p-chip
+        [label]="postWriteble().category"
+        class="bg-primary-100 text-primary-700 text-xs"
+      >
+      </p-chip> -->
+    </div>
+
+    @if(postWriteble().userId == authService.user()?.uid){
+    <p-button
+      icon="pi pi-ellipsis-v"
+      styleClass="p-button-text p-button-rounded p-button-sm"
+      (onClick)="postMenu.toggle($event)"
+    >
+    </p-button>
+
+    }
+    <p-menu #postMenu [model]="postMenuItems()" [popup]="true" appendTo="body">
+    </p-menu>
+  </div>
+
+  <!-- Post Content -->
+  <h3 class="text-xl font-bold text-900 mb-2 cursor-pointer hover:text-primary">
+    {{ postWriteble().title }}
+  </h3>
+  <p class="text-600 mb-3 line-height-3">{{ postWriteble().content }}</p>
+
+  <!-- Tags -->
+  <!-- @if (postWriteble().tags.length > 0) {
+            <div class="flex flex-wrap gap-2 mb-3">
+              @for (tag of postWriteble().tags; track tag) {
+              <p-chip
+                [label]="tag"
+                class="text-xs bg-gray-100 cursor-pointer"
+                (click)="filterByTag(tag)"
+              >
+              </p-chip>
+              }
+            </div>
+            } -->
+
+  <p-divider></p-divider>
+
+  <!-- Post Actions -->
+  <div class="flex align-items-center justify-content-between flex-wrap gap-3">
+    <div class="flex align-items-center gap-4">
+      <button
+        class="flex align-items-center gap-2 border-none bg-transparent cursor-pointer transition-all transition-duration-200 p-2 border-round-lg"
+        [class.text-pink-500]="postWriteble().likes! > 0"
+        [class.text-600]="postWriteble().likes! < 1"
+        [class.hover:bg-pink-50]="postWriteble().likes! > 0"
+        [class.hover:bg-gray-100]="postWriteble().likes! < 1"
+        (click)="toggleLike(postWriteble()!)"
+      >
+        <i
+          [class]="
+                          postWriteble().likes! > 0
+                            ? 'pi pi-heart-fill text-xl'
+                            : 'pi pi-heart text-xl'
+                        "
+        ></i>
+        <span class="font-semibold">{{ postWriteble().likes }}</span>
+      </button>
+
+      <button
+        class="flex align-items-center gap-2 text-600 border-none bg-transparent cursor-pointer hover:bg-gray-100 transition-colors transition-duration-200 p-2 border-round-lg"
+        (click)="toggleComments(postWriteble()!)"
+      >
+        <i class="pi pi-comment text-xl"></i>
+        <span class="font-semibold">{{ postWriteble().commentsCount }}</span>
+      </button>
+
+      <!-- <div class="flex align-items-center gap-2 text-600">
+                  <i class="pi pi-eye text-xl"></i>
+                  <span class="font-semibold">{{ postWriteble().views }}</span>
+                </div> -->
+    </div>
+
+    <!-- <p-button
+                icon="pi pi-share-alt"
+                label="Condividi"
+                class="p-button-text p-button-sm"
+              >
+              </p-button> -->
+  </div>
+
+  <!-- Comments Section -->
+  @if (postWriteble().showComments) {
+
+  <div class="mt-4 pt-4 border-top-1 surface-border">
+    <!-- New Comment Form -->
+    <div class="flex gap-3 mb-4">
+      <p-avatar label="TU" class="bg-primary" shape="circle"> </p-avatar>
+      <div class="flex-1">
+        <textarea
+          pInputTextarea
+          [(ngModel)]="newCommentText"
+          [rows]="3"
+          placeholder="Scrivi un commento..."
+          class="w-full border-round-xl"
+        >
+        </textarea>
+        <div class="flex justify-content-end gap-2 mt-2">
+          <p-button
+            label="Annulla"
+            class="p-button-text p-button-sm"
+            (onClick)="annullaCommento()"
+          >
+          </p-button>
+          <p-button
+            label="Commenta"
+            icon="pi pi-send"
+            class="p-button-sm"
+            [disabled]="!newCommentText().trim()"
+            (onClick)="addComment(post()!)"
+          >
+          </p-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comments List -->
+    @if (postWriteble().comments!.length > 0) {
+    <div class="flex flex-column gap-3">
+      @for (comment of postWriteble().comments; track comment.id) {
+      <div
+        class="flex gap-3 p-3 border-round-xl hover:bg-gray-50 transition-colors transition-duration-200"
+      >
+        <p-avatar
+          [label]="comment.authorAvatar"
+          class="bg-blue-500"
+          shape="circle"
+        >
+        </p-avatar>
+        <div class="flex-1">
+          <div class="flex align-items-center gap-2 mb-1">
+            <span class="font-bold text-900 text-sm">{{ comment.author }}</span>
+            <span class="text-xs text-600"
+              >{{ comment.createdAt | timeAgo}}</span
+            >
+          </div>
+          <p class="text-600 text-sm mb-2 line-height-3">
+            {{ comment.content }}
+          </p>
+          <div class="flex align-items-center gap-3">
+            <button
+              class="flex align-items-center gap-1 border-none bg-transparent cursor-pointer transition-colors transition-duration-200 p-1"
+              [class.text-pink-500]="comment.isLiked"
+              [class.text-600]="!comment.isLiked"
+              (click)="toggleCommentLike(postWriteble().id!,comment )"
+            >
+              <i
+                [class]="
+                                comment.isLiked
+                                  ? 'pi pi-heart-fill'
+                                  : 'pi pi-heart'
+                              "
+              ></i>
+              <span class="text-xs font-semibold">{{ comment.likes }}</span>
+            </button>
+            <!-- <button
+              class="text-xs text-600 border-none bg-transparent cursor-pointer hover:text-primary transition-colors transition-duration-200"
+            >
+              Rispondi
+            </button> -->
+          </div>
+        </div>
+
+        @if(comment.userId == authService.user()?.uid){
+        <p-button
+          icon="pi pi-ellipsis-v"
+          styleClass="p-button-text p-button-rounded p-button-sm"
+          (onClick)="toogleComment.toggle($event)"
+        >
+        </p-button>
+
+        }
+        <p-menu
+          #toogleComment
+          [model]="toogleCommentItems()"
+          [popup]="true"
+          appendTo="body"
+          (onShow)="commentSelected(comment)"
+          (onHide)="commentSelected(null)"
+        >
+        </p-menu>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</p-card>

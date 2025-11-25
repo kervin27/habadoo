@@ -59,6 +59,7 @@
       [class.text-white]="item.active"
       [class.hover:bg-gray-100]="!item.active"
       (click)="setActiveMenu(item.label); sidebarVisible.set(false)"
+      [routerLink]="item.path"
     >
       <i [class]="item.icon + ' text-xl'"></i>
       <span class="font-semibold">{{ item.label }}</span>

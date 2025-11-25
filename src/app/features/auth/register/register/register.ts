@@ -18,6 +18,7 @@ import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../../core/services/auth-services';
 import { FirebaseCatchError } from '../../../../core/interceptors/firebase-error.interceptor';
 import { ToastService } from '../../../../core/services/toast-service';
+import { PathEnum } from '../../../../shared/variables/path.enum';
 @Component({
   selector: 'app-register',
   imports: [
@@ -39,7 +40,7 @@ export class Register {
   transalteService: TranslateService = inject(TranslateService);
   toastService: ToastService = inject(ToastService);
   firebaseCatchError: FirebaseCatchError = inject(FirebaseCatchError);
-
+  pathEnum = PathEnum;
   registerForm = new FormGroup(
     {
       username: new FormControl<string>('', {
@@ -99,7 +100,7 @@ export class Register {
               `La registrazione è avvenuta con successo`
             );
             setTimeout(() => {
-              this.router.navigate(['/login']);
+              this.router.navigate([`/${PathEnum.LOGIN}`]);
             }, 3000);
           } else {
             return;

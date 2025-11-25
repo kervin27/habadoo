@@ -1,0 +1,91 @@
+<div [formGroup]="postForm" class="flex flex-column gap-4">
+  <!-- Titolo -->
+  <div class="flex flex-column gap-2">
+    <label class="font-semibold text-900">
+      Titolo * @if (postForm.get('title')?.touched &&
+      postForm.get('title')?.invalid) {
+      <small class="text-red-500 ml-2">
+        @if (postForm.get('title')?.errors?.['required']) { Il titolo è
+        obbligatorio } @if (postForm.get('title')?.errors?.['minlength']) {
+        Minimo 5 caratteri }
+      </small>
+      }
+    </label>
+    <input
+      pInputText
+      formControlName="title"
+      placeholder="Inserisci il titolo"
+      class="w-full p-3"
+      [class.ng-invalid]="postForm.get('title')?.touched && postForm.get('title')?.invalid"
+      [class.ng-dirty]="postForm.get('title')?.touched"
+    />
+  </div>
+
+  <!-- Contenuto -->
+  <div class="flex flex-column gap-2">
+    <div class="flex justify-content-between align-items-center">
+      <label class="font-semibold text-900">
+        Contenuto * @if (postForm.get('content')?.touched &&
+        postForm.get('content')?.invalid) {
+        <small class="text-red-500 ml-2">
+          @if (postForm.get('content')?.errors?.['required']) { Il contenuto è
+          obbligatorio } @if (postForm.get('content')?.errors?.['minlength']) {
+          Minimo 10 caratteri }
+        </small>
+        }
+      </label>
+      <small
+        [class.text-red-500]="charCount() > 1500"
+        [class.text-orange-500]="charCount() > 1000 && charCount() <= 1500"
+        [class.text-gray-400]="charCount() <= 1000"
+        class="font-semibold"
+      >
+        {{ charCount() }} / 2000
+      </small>
+    </div>
+    <textarea
+      pInputTextarea
+      formControlName="content"
+      placeholder="Scrivi qui il tuo post... Puoi condividere domande, esperienze o suggerimenti!"
+      [rows]="8"
+      [maxlength]="2000"
+      class="w-full"
+      [class.ng-invalid]="postForm.get('content')?.touched && postForm.get('content')?.invalid"
+      [class.ng-dirty]="postForm.get('content')?.touched"
+      style="resize: vertical; min-height: 200px"
+    ></textarea>
+  </div>
+
+  <!-- Info validazione form -->
+  @if (showValidationSummary()) {
+  <div class="p-3 surface-100 border-round-lg border-1 border-orange-300">
+    <div class="flex align-items-center gap-2 text-orange-700">
+      <i class="pi pi-info-circle"></i>
+      <span class="text-sm font-semibold">
+        Compila tutti i campi obbligatori per pubblicare il post
+      </span>
+    </div>
+  </div>
+  }
+
+  <div class="flex gap-2 justify-content-end flex-wrap">
+    <p-button
+      label="Annulla"
+      (onClick)="closeDialog()"
+      [outlined]="true"
+      severity="secondary"
+      styleClass="font-semibold"
+      type="button"
+    />
+
+    <p-button
+      label="🚀 Pubblica Post"
+      (onClick)="publishPost()"
+      [disabled]="!postForm.valid"
+      severity="info"
+      [raised]="true"
+      styleClass="font-semibold"
+      type="button"
+    />
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { MenuModule } from 'primeng/menu';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { RouterLink } from '@angular/router';
+import { PathEnum } from '../../../shared/variables/path.enum';
 
 interface NewsItem {
   id: number;
@@ -56,7 +57,7 @@ export class Home {
   // Signals per la gestione dello stato (no Zone.js)
   sidebarVisible = signal(false);
   activeMenuItem = signal('Home');
-
+  pathEnum = PathEnum;
   menuItems = signal([
     { label: 'Home', icon: 'pi pi-home', active: true },
     { label: 'Forum', icon: 'pi pi-comments', active: false, path: '/forum' },

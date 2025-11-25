@@ -53,7 +53,7 @@
           <div class="col-12 sm:col-6">
             <p-card
               class="border-round-2xl shadow-1 hover:shadow-3 cursor-pointer transition-all transition-duration-200"
-              routerLink="/forum"
+              [routerLink]="'/' + pathEnum.FORUM"
             >
               <div
                 [class]="'w-3rem h-3rem ' + cat.color + ' border-round-xl flex align-items-center justify-content-center mb-3'"

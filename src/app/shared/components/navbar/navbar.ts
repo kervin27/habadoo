@@ -5,11 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
 import { AuthService } from '../../../core/services/auth-services';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { PathEnum } from '../../variables/path.enum';
 
 @Component({
   selector: 'app-navbar',
-  imports: [ButtonModule, AvatarModule, DrawerModule, MenuModule],
+  imports: [ButtonModule, AvatarModule, DrawerModule, MenuModule, RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
@@ -18,11 +19,21 @@ export class Navbar {
   activeMenuItem = signal('Home');
 
   menuItems = signal([
-    { label: 'Home', icon: 'pi pi-home', active: true },
-    { label: 'Forum', icon: 'pi pi-comments', active: false },
-    { label: 'Galleria', icon: 'pi pi-images', active: false },
-    { label: 'Schede Palestra', icon: 'pi pi-chart-bar', active: false },
-    { label: 'Appunti', icon: 'pi pi-file', active: false },
+    {
+      label: 'Home',
+      icon: 'pi pi-home',
+      active: true,
+      path: `/${PathEnum.HOME}`,
+    },
+    {
+      label: 'Forum',
+      icon: 'pi pi-comments',
+      active: false,
+      path: `/${PathEnum.FORUM}`,
+    },
+    // { label: 'Galleria', icon: 'pi pi-images', active: false },
+    // { label: 'Schede Palestra', icon: 'pi pi-chart-bar', active: false },
+    // { label: 'Appunti', icon: 'pi pi-file', active: false },
   ]);
 
   setActiveMenu(label: string) {
@@ -58,6 +69,6 @@ export class Navbar {
 
   logout() {
     this.authService.logoutUser();
-    this.router.navigate(['/login']);
+    this.router.navigate([`/${PathEnum.LOGIN}`]);
   }
 }

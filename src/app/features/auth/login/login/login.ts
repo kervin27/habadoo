@@ -16,6 +16,7 @@ import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../../core/services/auth-services';
 import { FirebaseCatchError } from '../../../../core/interceptors/firebase-error.interceptor';
 import { ToastService } from '../../../../core/services/toast-service';
+import { PathEnum } from '../../../../shared/variables/path.enum';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class Login {
   router: Router = inject(Router);
   toastService: ToastService = inject(ToastService);
   firebaseCatchError: FirebaseCatchError = inject(FirebaseCatchError);
-
+  pathEnum = PathEnum;
   registerForm = new FormGroup({
     email: new FormControl<string>('', {
       validators: [Validators.required, Validators.email],
@@ -72,7 +73,7 @@ export class Login {
           this.registerForm.value.password!
         )
         .then(() => {
-          this.router.navigate(['/home']);
+          this.router.navigate([`/${PathEnum.HOME}`]);
         })
         .catch((error) => {
           this.firebaseCatchError.handleFirebaseError(error);
